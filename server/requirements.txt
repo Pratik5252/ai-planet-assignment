@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+langchain-community 
+pymupdf
+langchain-chroma
+langchain-google-genai
+python-multipart
+langchain_openai

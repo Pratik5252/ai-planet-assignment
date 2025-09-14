@@ -1,0 +1,9 @@
+.venv
+example/.venv
+__pycache__/
+*.pyc
+demo/.venv
+.idea/
+chroma_db/
+*.sqlite3
+.env
