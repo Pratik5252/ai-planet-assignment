@@ -6,3 +6,6 @@ langchain-chroma
 langchain-google-genai
 python-multipart
 langchain_openai
+sqlmodel
+psycopg2
+python-dotenv
