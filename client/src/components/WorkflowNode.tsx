@@ -39,9 +39,7 @@ export function WorkflowNode({
 }: WorkflowNodeProps) {
     const [values, setValues] =
         useState<Record<string, string | number | boolean>>(data);
-    const [showApi, setShowApi] = useState<Record<string, boolean>>(
-        {}
-    );
+    const [showApi, setShowApi] = useState<Record<string, boolean>>({});
 
     const handleFieldChange = useCallback(
         (fieldId: string, value: string | number | boolean) => {
@@ -70,11 +68,20 @@ export function WorkflowNode({
                     />
                 );
 
-            case 'input':
+            case 'input': {
+                const isApiKey =
+                    field.id.includes('api-key') ||
+                    field.id.includes('serp-api-key');
                 return (
                     <div key={field.id} className="relative">
                         <Input
-                            type={showApi[field.id] ? 'text' : 'password'}
+                            type={
+                                isApiKey
+                                    ? showApi[field.id]
+                                        ? 'text'
+                                        : 'password'
+                                    : 'text'
+                            }
                             key={field.id}
                             id={field.id}
                             placeholder={field.placeholder}
@@ -82,28 +89,35 @@ export function WorkflowNode({
                             onChange={(e) =>
                                 handleFieldChange(field.id, e.target.value)
                             }
-                            className={cn('nodrag pr-10', field.className)}
-                        />
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={() =>
-                                setShowApi((prev) => ({
-                                    ...prev,
-                                    [field.id]: !prev[field.id],
-                                }))
-                            }
-                        >
-                            {showApi[field.id] ? (
-                                <EyeOff className="h-4 w-4" />
-                            ) : (
-                                <Eye className="h-4 w-4" />
+                            className={cn(
+                                'nodrag',
+                                isApiKey ? 'pr-10' : '',
+                                field.className
                             )}
-                        </Button>
+                        />
+                        {isApiKey && (
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() =>
+                                    setShowApi((prev) => ({
+                                        ...prev,
+                                        [field.id]: !prev[field.id],
+                                    }))
+                                }
+                            >
+                                {showApi[field.id] ? (
+                                    <EyeOff className="h-4 w-4" />
+                                ) : (
+                                    <Eye className="h-4 w-4" />
+                                )}
+                            </Button>
+                        )}
                     </div>
                 );
+            }
 
             case 'select':
                 return (

@@ -28,6 +28,7 @@ export interface NodeField {
     min?: number;
     max?: number;
     step?: number;
+    accept?: string; // For file input types
 }
 
 export interface WorkflowNodeConfig {

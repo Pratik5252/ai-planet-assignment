@@ -21,7 +21,7 @@ interface DraggableNodeProps {
 }
 
 function DraggableNode({ type, label, icon: Icon }: DraggableNodeProps) {
-    const [_, setType] = useDnD();
+    const [, setType] = useDnD();
 
     const onDragStart = (event: React.DragEvent, nodeType: string) => {
         console.log('Drag started for type:', nodeType);
@@ -69,7 +69,7 @@ function AppSidebar() {
     ];
 
     return (
-        <Sidebar className="border-r">
+        <Sidebar className="border-r pt-14">
             <SidebarHeader className="p-4">
                 <h2 className="text-lg font-semibold">Components</h2>
                 <p className="text-sm text-gray-600">

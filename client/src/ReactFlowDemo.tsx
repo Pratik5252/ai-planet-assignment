@@ -13,7 +13,7 @@ import {
     useEdgesState,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
     UserQueryNode,
     KnowledgeBaseNode,
@@ -23,6 +23,7 @@ import {
 import CustomEdge from './CustomEdge';
 import { SidebarTrigger } from './components/ui/sidebar';
 import { useDnD } from './DnDContext';
+import { useWorkflowPersistence } from './hooks/useWorkflowPersistence';
 
 const nodeTypes = {
     userQuery: UserQueryNode,
@@ -35,12 +36,36 @@ const edgeTypes = { customEdge: CustomEdge };
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-function ReactFlowCanvas() {
-    const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+interface ReactFlowCanvasProps {
+    workflowId?: number;
+    initialNodes?: Node[];
+    initialEdges?: Edge[];
+}
+
+function ReactFlowCanvas({
+    workflowId,
+    initialNodes = [],
+    initialEdges = [],
+}: ReactFlowCanvasProps) {
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges);
     const { screenToFlowPosition } = useReactFlow();
     const [type, setType] = useDnD();
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
+
+    const { saveNow, isSaving } = useWorkflowPersistence({
+        workflowId: workflowId || 0,
+        nodes,
+        edges,
+        enabled: !!workflowId,
+    });
+
+    useEffect(() => {
+        if (initialNodes.length > 0 || initialEdges.length > 0) {
+            setNodes(initialNodes);
+            setEdges(initialEdges);
+        }
+    }, [initialNodes, initialEdges, setNodes, setEdges]);
 
     const onConnect: OnConnect = useCallback(
         (params) => setEdges((edgeSnapshot) => addEdge(params, edgeSnapshot)),
@@ -111,15 +136,37 @@ function ReactFlowCanvas() {
                         className="bg-white shadow-md"
                     />
                 </Panel>
+                {workflowId && isSaving && (
+                    <Panel position="top-right" className="m-2">
+                        <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg shadow-md border text-sm flex items-center">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                            Saving...
+                        </div>
+                    </Panel>
+                )}
             </ReactFlow>
         </div>
     );
 }
 
-export default function ReactFlowDemo() {
+interface ReactFlowDemoProps {
+    workflowId?: number;
+    initialNodes?: Node[];
+    initialEdges?: Edge[];
+}
+
+export default function ReactFlowDemo({
+    workflowId,
+    initialNodes,
+    initialEdges,
+}: ReactFlowDemoProps = {}) {
     return (
         <ReactFlowProvider>
-            <ReactFlowCanvas />
+            <ReactFlowCanvas
+                workflowId={workflowId}
+                initialNodes={initialNodes}
+                initialEdges={initialEdges}
+            />
         </ReactFlowProvider>
     );
 }

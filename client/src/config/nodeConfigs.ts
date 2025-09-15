@@ -84,12 +84,6 @@ export const knowledgeBaseConfig: WorkflowNodeConfig = {
             type: 'input',
             placeholder: '**********************',
         },
-        {
-            id: 'query-text',
-            label: 'Query',
-            type: 'textarea',
-            placeholder: 'Enter query...',
-        },
     ],
 };
 
