@@ -14,8 +14,6 @@ export function CustomHandle({
     type = 'target',
     id,
     style = {},
-    label,
-    labelStyle = {},
 }: CustomHandleProps) {
     return (
         <div className="relative">

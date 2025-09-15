@@ -1,5 +1,5 @@
-import { Handle, Position } from '@xyflow/react';
-import { useCallback } from 'react';
+import { Position } from '@xyflow/react';
+
 import { CustomHandle } from './CustomHandle';
 import {
     BaseNode,

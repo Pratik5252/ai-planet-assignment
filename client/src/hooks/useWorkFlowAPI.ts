@@ -208,7 +208,7 @@ export const useOptimisticSaveCanvas = () => {
             );
             return { previousWorkflow };
         },
-        onError: (err, variables, context) => {
+        onError: (_, variables, context) => {
             if (context?.previousWorkflow) {
                 queryClient.setQueryData(
                     ['workflow', variables.id],
@@ -216,9 +216,9 @@ export const useOptimisticSaveCanvas = () => {
                 );
             }
         },
-        onSettled: (data, error, variables) => {
+        onSettled: (_, __, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['workflow', variables.id],
+                queryKey: ['workflow', variables?.id],
             });
         },
     });
