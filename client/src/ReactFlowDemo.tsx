@@ -53,7 +53,7 @@ function ReactFlowCanvas({
     const [type, setType] = useDnD();
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
-    const { saveNow, isSaving } = useWorkflowPersistence({
+    const { isSaving } = useWorkflowPersistence({
         workflowId: workflowId || 0,
         nodes,
         edges,

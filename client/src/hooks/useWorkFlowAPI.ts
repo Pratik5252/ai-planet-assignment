@@ -23,7 +23,7 @@ export interface UpdateWorkflowData {
     edges?: any[];
 }
 
-const API_BASE_URL = 'http://localhost:8000/api/workflows';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const workflowAPI = {
     //get all workflows
