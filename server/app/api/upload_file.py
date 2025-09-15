@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from ..services.document_service import process_docs
 
 
-router = APIRouter()
+router = APIRouter(prefix="/api", tags=["files"])
 
 
 @router.post("/uploadfile/")
