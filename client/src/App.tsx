@@ -1,8 +1,15 @@
-import React from 'react';
 import './App.css';
+import Layout from './Layout';
+import ReactFlowDemo from './ReactFlowDemo';
 
 const App = () => {
-    return <div>Hello</div>;
+    return (
+        <div>
+            <Layout>
+                <ReactFlowDemo />
+            </Layout>
+        </div>
+    );
 };
 
 export default App;
