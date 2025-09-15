@@ -1,14 +1,30 @@
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
-from app.config import OPENAI_API_KEY, CHROMA_PERSIST_DIR
-import os
+from app.config import CHROMA_PERSIST_DIR
 
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+def get_embeddings(
+    api_key: str = None, model: str = "text-embedding-3-small"
+) -> OpenAIEmbeddings:
+    """Get OpenAI embeddings with provided API key - no fallback"""
+    if not api_key:
+        raise ValueError(
+            "OpenAI API key is required for embeddings. Please provide it in the component."
+        )
 
-vector_store = Chroma(
-    collection_name="my_collection",
-    embedding_function=embeddings,
-    persist_directory=CHROMA_PERSIST_DIR,
-)
+    return OpenAIEmbeddings(model=model, openai_api_key=api_key)
+
+
+def get_vector_store(
+    api_key: str = None,
+    model: str = "text-embedding-3-small",
+    collection_name: str = "my_collection",
+) -> Chroma:
+    """Get Chroma vector store with custom API key and model"""
+    embeddings = get_embeddings(api_key, model)
+
+    return Chroma(
+        collection_name=collection_name,
+        embedding_function=embeddings,
+        persist_directory=CHROMA_PERSIST_DIR,
+    )

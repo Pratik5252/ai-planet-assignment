@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.models.workflow import Workflow
 from app.database import get_session
@@ -58,7 +58,7 @@ class WorkflowManageService:
         if edges is not None:
             workflow.edges = edges
 
-        workflow.updated_at = datetime.utcnow()
+        workflow.updated_at = datetime.now(timezone.utc)
 
         self.session.add(workflow)
         self.session.commit()
@@ -74,7 +74,7 @@ class WorkflowManageService:
 
         workflow.nodes = nodes
         workflow.edges = edges
-        workflow.updated_at = datetime.utcnow()
+        workflow.updated_at = datetime.now(timezone.utc)
 
         self.session.add(workflow)
         self.session.commit()

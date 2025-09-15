@@ -38,6 +38,7 @@ async def get_all_workflows(session: Session = Depends(get_session)):
     try:
         service = WorkflowManageService(session)
         workflows = service.get_all_workflows()
+        print(workflows)
         return workflows
     except Exception as e:
         raise HTTPException(

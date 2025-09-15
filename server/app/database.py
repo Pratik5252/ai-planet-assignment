@@ -33,14 +33,7 @@ def create_db_and_tables():
 
 
 def get_session():
-    with Session(engine) as session:
-        try:
-            yield session
-        except Exception as e:
-            session.rollback()
-            raise e
-        finally:
-            session.close()
+    return Session(engine)
 
 
 def test_connection():
