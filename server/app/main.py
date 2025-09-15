@@ -30,3 +30,7 @@ async def startup_event():
     print("🚀 Starting AI Workflow Builder...")
     create_db_and_tables()
     print("✅ Application started successfully!")
+    
+@app.get("/")
+async def root():
+    return {"message": "Hello from FastAPI on Render!"}
